@@ -1,2 +1,2 @@
 # IIA
- Trabalhos práticos de Introdução às Redes de Comunicação
+ Trabalhos práticos de Introdução à Inteligência Artificial
