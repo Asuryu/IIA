@@ -1,23 +1,25 @@
-globals[contador limite]
+globals[contador limite] ; Contador de referência e limite de carga dos limpadores
 
-breed[comiloes comilao]
-breed[limpadores limpador]
-turtles-own[energy]
-limpadores-own[nr_Residuos]
+breed[comiloes comilao] ; Definição do novo tipo de agente: comilões
+breed[limpadores limpador] ; Definição do novo tipo de agente: limpadores
+turtles-own[energy] ; Todos os agentes têm um atributo: energia
+limpadores-own[nr_Residuos] ; Todos os limpadores têm um atributo: número de resíduos que carregam
 
 
 
 to Setup
-  clear-all
-  setup-turtles
-  setup-patches
-  reset-ticks
+  clear-all ; Limpa o tabuleiro
+  setup-turtles ; Cria os agentes
+  setup-patches ; Cria o tabuleiro
+  reset-ticks ; Reseta os ticks
 end
 
 to setup-patches
 
+  ; Cor inicial do tabuleiro
   ask patches [set pcolor black]
 
+  ; Preenchimento do tabuleiro com as cores dependendo da percentagem
   ask patches with [pcolor = black]
   [
     if random 101 < LixoNormal
@@ -34,6 +36,7 @@ to setup-patches
     ]
   ]
 
+  ; Criação dos depósitos de acordo com os valores escolhidos
   set contador 0
   while [contador < Depositos]
   [
@@ -50,6 +53,7 @@ to setup-turtles
   create-comiloes NrComiloes
   create-limpadores NrLimpadores
 
+  ; Criação dos agentes Comilões
   ask comiloes
   [
     set size 1.5
@@ -59,6 +63,7 @@ to setup-turtles
     setxy random-xcor random-ycor
   ]
 
+  ; Criação dos agentes Limpadores
   ask limpadores
   [
     set size 1.5
@@ -70,6 +75,7 @@ to setup-turtles
     setxy random-xcor random-ycor
   ]
 
+  ; Definição da energia inicial para todos os agentes
   ask turtles
   [
     set energy EnergiaInicial
@@ -78,9 +84,11 @@ end
 
 to go
 
-  MoveComiloes
-  MoveLimpadores
-  VerificaMorte
+  MoveComiloes ; Procedimento para o comportamento dos Comilões
+  MoveLimpadores ; Procedimento para o comportamento dos Comilões
+  VerificaMorte ; Procedimento para verificar a vida dos agentes
+
+  ; Mostra (ou não) a label e perde vida a cada tick
   ask comiloes
   [
     ifelse MostraVida?
@@ -104,7 +112,7 @@ to go
     set energy energy - 1
   ]
   tick
-  if count turtles = 0
+  if count turtles = 0 ; Se todos os agentes morrerem a simulação acaba
   [stop]
 
 end
@@ -320,7 +328,7 @@ to VerificaMorte
 
   ask turtles
   [
-    if energy = 0
+    if energy <= 0 ; Se a energia do agente for menor ou igual a zero este morre
     [
       die
     ]
