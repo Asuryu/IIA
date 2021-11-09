@@ -561,9 +561,9 @@ HORIZONTAL
 
 SLIDER
 18
-198
+196
 190
-231
+229
 Depositos
 Depositos
 1
@@ -576,9 +576,9 @@ HORIZONTAL
 
 SLIDER
 18
-242
+240
 190
-275
+273
 Energia
 Energia
 0
@@ -592,7 +592,7 @@ HORIZONTAL
 INPUTBOX
 665
 56
-820
+750
 116
 EnergiaInicial
 150.0
@@ -603,7 +603,7 @@ Number
 INPUTBOX
 665
 124
-820
+751
 184
 NrComiloes
 25.0
@@ -612,10 +612,10 @@ NrComiloes
 Number
 
 INPUTBOX
-665
-192
-820
-252
+756
+124
+842
+184
 NrLimpadores
 25.0
 1
@@ -623,10 +623,10 @@ NrLimpadores
 Number
 
 INPUTBOX
-665
-261
-820
-321
+755
+55
+843
+115
 LimiteResiduos
 5.0
 1
@@ -634,10 +634,10 @@ LimiteResiduos
 Number
 
 SWITCH
-666
-415
-789
-448
+664
+346
+787
+379
 MostraVida?
 MostraVida?
 0
@@ -645,10 +645,10 @@ MostraVida?
 -1000
 
 MONITOR
-17
-293
-91
-338
+114
+376
+188
+421
 Lixo Toxico
 count patches with [pcolor = red]
 17
@@ -656,10 +656,10 @@ count patches with [pcolor = red]
 11
 
 MONITOR
-112
-293
-189
-338
+16
+376
+93
+421
 Lixo Normal
 count patches with [pcolor = yellow]
 17
@@ -667,10 +667,10 @@ count patches with [pcolor = yellow]
 11
 
 MONITOR
-16
-347
-188
-392
+15
+430
+187
+475
 Alimento                              
 count patches with [pcolor = green]
 17
@@ -688,10 +688,10 @@ Agentes Reativos
 1
 
 SWITCH
-665
-331
-840
-364
+663
+262
+838
+295
 RegeneraAlimento?
 RegeneraAlimento?
 0
@@ -699,10 +699,10 @@ RegeneraAlimento?
 -1000
 
 MONITOR
-15
-406
-101
-451
+14
+489
+100
+534
 Limpadores
 count limpadores
 17
@@ -710,10 +710,10 @@ count limpadores
 11
 
 MONITOR
-116
-406
-187
-451
+115
+489
+186
+534
 Comilões
 count comiloes
 17
@@ -721,10 +721,10 @@ count comiloes
 11
 
 SWITCH
-665
-373
-812
-406
+663
+304
+810
+337
 RegeneraLixo?
 RegeneraLixo?
 0
@@ -732,58 +732,58 @@ RegeneraLixo?
 -1000
 
 SWITCH
-29
-521
-132
-554
+663
+388
+766
+421
 Ninjas?
 Ninjas?
-0
+1
 1
 -1000
 
 INPUTBOX
-93
-563
-324
-623
+664
+190
+841
+250
 NrNinjas
-4.0
+5.0
 1
 0
 Number
 
 SLIDER
-666
-457
-838
-490
+17
+286
+189
+319
 BOOOM
 BOOOM
 1
 10
-5.0
+10.0
 1
 1
 NIL
 HORIZONTAL
 
 SWITCH
-118
-475
-257
-508
+662
+428
+801
+461
 AtivarBOOOM?
 AtivarBOOOM?
-0
+1
 1
 -1000
 
 SLIDER
-668
-501
-840
-534
+16
+330
+188
+363
 RaioBOOOM
 RaioBOOOM
 1
@@ -793,6 +793,28 @@ RaioBOOOM
 1
 NIL
 HORIZONTAL
+
+MONITOR
+661
+475
+730
+520
+Ninjas
+count ninjas
+17
+1
+11
+
+MONITOR
+736
+475
+801
+520
+BOOOM!
+count patches with [pcolor = 125]
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -1140,6 +1162,89 @@ NetLogo 6.2.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="H1 - Energia - 10/25/50 - 10ITER" repetitions="10" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="2500"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="Energia">
+      <value value="10"/>
+      <value value="25"/>
+      <value value="50"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="H2 - EnergiaInicial - 100/150/250 - 10ITER" repetitions="10" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="2500"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="EnergiaInicial">
+      <value value="100"/>
+      <value value="150"/>
+      <value value="200"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="H3 - NrLimpadores - 10/25/50 - 10ITER" repetitions="10" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="2500"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="NrLimpadores">
+      <value value="10"/>
+      <value value="25"/>
+      <value value="50"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="H1M - BOOOM - 1/5/10 - 10ITER" repetitions="10" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="2500"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="BOOOM">
+      <value value="1"/>
+      <value value="5"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="AtivarBOOOM?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RaioBOOOM">
+      <value value="3"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="H2M - NrNinjas - 5/10/20" repetitions="10" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="2500"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="Ninjas?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="NrNinjas">
+      <value value="1"/>
+      <value value="3"/>
+      <value value="5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="H3M - RaioBOOOM - 3/5/10 - 10ITER" repetitions="10" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="2500"/>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="BOOOM">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="AtivarBOOOM?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="RaioBOOOM">
+      <value value="3"/>
+      <value value="5"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
