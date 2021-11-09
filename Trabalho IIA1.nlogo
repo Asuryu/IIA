@@ -1,5 +1,6 @@
 globals[contador limite] ; Contador de referência e limite de carga dos limpadores
 
+breed [ninjas ninja] ; Definição do novo tipo de agente: ninjas
 breed[comiloes comilao] ; Definição do novo tipo de agente: comilões
 breed[limpadores limpador] ; Definição do novo tipo de agente: limpadores
 turtles-own[energy] ; Todos os agentes têm um atributo: energia
@@ -46,12 +47,29 @@ to setup-patches
     ]
     set contador contador + 1
   ]
+  if AtivarBOOOM?
+  [
+    set contador 0
+    while [contador < BOOOM]
+    [
+      ask one-of patches with [pcolor = black]
+      [
+        set pcolor 125
+      ]
+      set contador contador + 1
+    ]
+  ]
 end
 
 to setup-turtles
 
   create-comiloes NrComiloes
   create-limpadores NrLimpadores
+
+  if Ninjas?
+  [
+    create-ninjas NrNinjas
+  ]
 
   ; Criação dos agentes Comilões
   ask comiloes
@@ -75,6 +93,15 @@ to setup-turtles
     setxy random-xcor random-ycor
   ]
 
+  ask ninjas
+  [
+    set size 1.5
+    set color 113
+    set shape "turtle"
+    set heading 0
+    setxy random-xcor random-ycor
+  ]
+
   ; Definição da energia inicial para todos os agentes
   ask turtles
   [
@@ -86,6 +113,7 @@ to go
 
   MoveComiloes ; Procedimento para o comportamento dos Comilões
   MoveLimpadores ; Procedimento para o comportamento dos Comilões
+  MoveNinjas ; Procedimento para o comportamento dos Ninjas
   VerificaMorte ; Procedimento para verificar a vida dos agentes
 
   ; Mostra (ou não) a label e perde vida a cada tick
@@ -111,8 +139,18 @@ to go
     ]
     set energy energy - 1
   ]
+  ask ninjas
+  [
+    ifelse MostraVida?
+    [
+      set label energy
+    ]
+    [
+      set label ""
+    ]
+  ]
   tick
-  if count turtles = 0 ; Se todos os agentes morrerem a simulação acaba
+  if count comiloes = 0 and count limpadores = 0; Se todos os agentes morrerem a simulação acaba
   [stop]
 
 end
@@ -177,53 +215,40 @@ end
 
 to MoveLimpadores
   ask limpadores [
-    ifelse [pcolor] of patch-here = red[
-      ifelse nr_Residuos < limite [
-        set pcolor black
-        set nr_Residuos nr_Residuos + 2
-        if regeneraLixo? [
-          ask one-of patches with [pcolor = black] [
-            set pcolor red
-          ]
-        ]
-      ]
+    ifelse [pcolor] of patch-here = 125
+    [
+      set pcolor black
+      if AtivarBOOOM?
       [
-        ifelse random 101 < 90
+        ask patches in-radius RaioBOOOM with [pcolor = red or pcolor = yellow]
         [
-          fd 1
-        ]
-        [
-          ifelse random 101 < 50
-          [
-            rt 90
-          ]
-          [
-            lt 90
-          ]
+          set pcolor black
         ]
       ]
     ]
     [
-      ifelse [pcolor] of patch-ahead 1 = red [
-        forward 1
+      ifelse [pcolor] of patch-ahead 1 = 125
+      [
+        fd 1
       ]
       [
-        ifelse [pcolor] of patch-right-and-ahead 90 1 = red [
+        ifelse [pcolor] of patch-right-and-ahead 90 1 = 125
+        [
           right 90
         ]
         [
-          ifelse [pcolor] of patch-here = yellow [
+          ifelse [pcolor] of patch-here = red[
             ifelse nr_Residuos < limite [
               set pcolor black
-              set nr_Residuos nr_Residuos + 1
+              set nr_Residuos nr_Residuos + 2
               if regeneraLixo? [
                 ask one-of patches with [pcolor = black] [
-                  set pcolor yellow
+                  set pcolor red
                 ]
               ]
             ]
             [
-              ifelse random 101 < 70
+              ifelse random 101 < 90
               [
                 fd 1
               ]
@@ -239,74 +264,112 @@ to MoveLimpadores
             ]
           ]
           [
-            ifelse [pcolor] of patch-ahead 1 = yellow [
+            ifelse [pcolor] of patch-ahead 1 = red [
               forward 1
             ]
             [
-              ifelse [pcolor] of patch-right-and-ahead 90 1 = yellow [
+              ifelse [pcolor] of patch-right-and-ahead 90 1 = red [
                 right 90
               ]
               [
-                ifelse [pcolor] of patch-here = green [
-                  set pcolor black
-                  ifelse nr_Residuos < round(limite / 2)[
-                    set energy energy + Energia
+                ifelse [pcolor] of patch-here = yellow [
+                  ifelse nr_Residuos < limite [
+                    set pcolor black
+                    set nr_Residuos nr_Residuos + 1
+                    if regeneraLixo? [
+                      ask one-of patches with [pcolor = black] [
+                        set pcolor yellow
+                      ]
+                    ]
                   ]
                   [
-                    set energy energy + round(Energia / 2)
-                  ]
-                  if regeneraAlimento? [
-                    ask one-of patches with [pcolor = black] [
-                      set pcolor green
+                    ifelse random 101 < 70
+                    [
+                      fd 1
+                    ]
+                    [
+                      ifelse random 101 < 50
+                      [
+                        rt 90
+                      ]
+                      [
+                        lt 90
+                      ]
                     ]
                   ]
                 ]
                 [
-                  ifelse [pcolor] of patch-ahead 1 = green [
+                  ifelse [pcolor] of patch-ahead 1 = yellow [
                     forward 1
                   ]
                   [
-                    ifelse [pcolor] of patch-right-and-ahead 90 1 = green [
+                    ifelse [pcolor] of patch-right-and-ahead 90 1 = yellow [
                       right 90
                     ]
                     [
-                      ifelse [pcolor] of patch-here = blue [
-                        set energy (10 * nr_Residuos)
-                        set nr_Residuos 0
-                        ifelse random 101 < 70
-                            [
-                              fd 1
+                      ifelse [pcolor] of patch-here = green [
+                        set pcolor black
+                        ifelse nr_Residuos < round(limite / 2)[
+                          set energy energy + Energia
                         ]
                         [
-                          ifelse random 101 < 50
-                          [
-                            rt 90
-                          ]
-                          [
-                            lt 90
+                          set energy energy + round(Energia / 2)
+                        ]
+                        if regeneraAlimento? [
+                          ask one-of patches with [pcolor = black] [
+                            set pcolor green
                           ]
                         ]
                       ]
                       [
-                        ifelse [pcolor] of patch-ahead 1 = blue [
+                        ifelse [pcolor] of patch-ahead 1 = green [
                           forward 1
                         ]
                         [
-                          ifelse [pcolor] of patch-right-and-ahead 90 1 = blue [
+                          ifelse [pcolor] of patch-right-and-ahead 90 1 = green [
                             right 90
                           ]
                           [
-                            ifelse random 101 < 70
-                            [
-                              fd 1
-                            ]
-                            [
-                              ifelse random 101 < 50
+                            ifelse [pcolor] of patch-here = blue [
+                              set energy (10 * nr_Residuos)
+                              set nr_Residuos 0
+                              ifelse random 101 < 70
                               [
-                                rt 90
+                                fd 1
                               ]
                               [
-                                lt 90
+                                ifelse random 101 < 50
+                                [
+                                  rt 90
+                                ]
+                                [
+                                  lt 90
+                                ]
+                              ]
+                            ]
+                            [
+                              ifelse [pcolor] of patch-ahead 1 = blue [
+                                forward 1
+                              ]
+                              [
+                                ifelse [pcolor] of patch-right-and-ahead 90 1 = blue [
+                                  right 90
+                                ]
+                                [
+                                  ifelse random 101 < 70
+                                  [
+                                    fd 1
+                                  ]
+                                  [
+                                    ifelse random 101 < 50
+                                    [
+                                      rt 90
+                                    ]
+                                    [
+                                      lt 90
+                                    ]
+                                  ]
+                                ]
                               ]
                             ]
                           ]
@@ -315,6 +378,60 @@ to MoveLimpadores
                     ]
                   ]
                 ]
+              ]
+            ]
+          ]
+
+        ]
+      ]
+    ]
+  ]
+end
+
+to MoveNinjas
+  ask ninjas
+  [
+    if any? comiloes-on neighbors4
+    [
+      set energy energy - round(EnergiaInicial / 10)
+    ]
+    ifelse [pcolor] of patch-here = green
+    [
+      ifelse random 101 < 80
+      [
+        set pcolor yellow
+      ]
+      [
+        set pcolor red
+      ]
+    ]
+    [
+      ifelse [pcolor] of patch-ahead 1 = green
+      [
+        fd 1
+      ]
+      [
+        ifelse [pcolor] of patch-left-and-ahead 90 1 = green
+        [
+          left 90
+        ]
+        [
+          ifelse [pcolor] of patch-right-and-ahead 90 1 = green
+          [
+            right 90
+          ]
+          [
+            ifelse random 101 < 70
+            [
+              fd 1
+            ]
+            [
+              ifelse random 101 < 50
+              [
+                rt 90
+              ]
+              [
+                lt 90
               ]
             ]
           ]
@@ -613,6 +730,69 @@ RegeneraLixo?
 0
 1
 -1000
+
+SWITCH
+29
+521
+132
+554
+Ninjas?
+Ninjas?
+0
+1
+-1000
+
+INPUTBOX
+93
+563
+324
+623
+NrNinjas
+4.0
+1
+0
+Number
+
+SLIDER
+666
+457
+838
+490
+BOOOM
+BOOOM
+1
+10
+5.0
+1
+1
+NIL
+HORIZONTAL
+
+SWITCH
+118
+475
+257
+508
+AtivarBOOOM?
+AtivarBOOOM?
+0
+1
+-1000
+
+SLIDER
+668
+501
+840
+534
+RaioBOOOM
+RaioBOOOM
+1
+10
+3.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
