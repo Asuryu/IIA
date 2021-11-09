@@ -1,0 +1,12 @@
+"BehaviorSpace results (NetLogo 6.2.0)"
+"Trabalho IIA1.nlogo"
+"H3 - NrLimpadores - 10/25/50 - 10ITER"
+"11/09/2021 02:26:09:804 +0000"
+"min-pxcor","max-pxcor","min-pycor","max-pycor"
+"-16","16","-16","16"
+"[run number]","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"
+"NrLimpadores","10","10","10","10","10","10","10","10","10","10","25","25","25","25","25","25","25","25","25","25","50","50","50","50","50","50","50","50","50","50"
+"[steps]","2500","2500","1049","2368","2466","1460","2500","2500","2313","2500","2500","2500","2500","2206","2456","2500","1440","2002","2500","2207","2401","2500","2087","2500","2500","2500","2500","2500","2500","2500"
+
+"[initial & final values]","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles","count turtles"
+,"3","2","0","0","0","0","4","1","0","4","1","1","1","0","0","5","0","0","3","0","0","2","0","2","2","1","1","5","1","3"
