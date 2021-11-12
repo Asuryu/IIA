@@ -177,55 +177,60 @@ to MoveComiloes
       [
         ifelse [pcolor] of patch-left-and-ahead 90 1 = 125
         [
-          right 90
+          left 90
         ]
         [
-          ifelse [pcolor] of patch-here = green
-          [
-            set pcolor black
-            set energy energy + Energia
-            if regeneraAlimento? [
-              ask one-of patches with [pcolor = black]
-              [
-                set pcolor green
-              ]
-            ]
+          ifelse [pcolor] of patch-right-and-ahead 90 1 = 125 [
+            right 90
           ]
           [
-            ifelse [pcolor] of patch-here = red or [pcolor] of patch-here = yellow
+            ifelse [pcolor] of patch-here = green
             [
-              die
+              set pcolor black
+              set energy energy + Energia
+              if regeneraAlimento? [
+                ask one-of patches with [pcolor = black]
+                [
+                  set pcolor green
+                ]
+              ]
             ]
             [
-              ifelse [pcolor] of patch-ahead 1 = green
+              ifelse [pcolor] of patch-here = red or [pcolor] of patch-here = yellow
               [
-                fd 1
+                die
               ]
               [
-                ifelse [pcolor] of patch-ahead 1 = red or [pcolor] of patch-ahead 1 = yellow
+                ifelse [pcolor] of patch-ahead 1 = green
                 [
-                  rt 90
-                  ifelse [pcolor] of patch-ahead 1 = red
-                  [
-                    set energy round(energy * 0.9)
-                  ]
-                  [
-                    set energy round(energy * 0.95)
-                  ]
-
+                  fd 1
                 ]
                 [
-                  ifelse random 101 < 90
+                  ifelse [pcolor] of patch-ahead 1 = red or [pcolor] of patch-ahead 1 = yellow
                   [
-                    fd 1
-                  ]
-                  [
-                    ifelse random 101 < 50
+                    rt 90
+                    ifelse [pcolor] of patch-ahead 1 = red
                     [
-                      rt 90
+                      set energy round(energy * 0.9)
                     ]
                     [
-                      lt 90
+                      set energy round(energy * 0.95)
+                    ]
+
+                  ]
+                  [
+                    ifelse random 101 < 90
+                    [
+                      fd 1
+                    ]
+                    [
+                      ifelse random 101 < 50
+                      [
+                        rt 90
+                      ]
+                      [
+                        lt 90
+                      ]
                     ]
                   ]
                 ]
