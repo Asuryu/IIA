@@ -1,4 +1,4 @@
-globals[contador limite] ; Contador de referência e limite de carga dos limpadores
+ globals[contador limite] ; Contador de referência e limite de carga dos limpadores
 
 breed [ninjas ninja] ; Definição do novo tipo de agente: ninjas
 breed[comiloes comilao] ; Definição do novo tipo de agente: comilões
@@ -158,52 +158,77 @@ end
 to MoveComiloes
   ask comiloes
   [
-    ifelse [pcolor] of patch-here = green
+    ifelse [pcolor] of patch-here = 125
     [
       set pcolor black
-      set energy energy + Energia
-      if regeneraAlimento? [
-        ask one-of patches with [pcolor = black]
+      if AtivarBOOOM?
+      [
+        ask patches in-radius RaioBOOOM with [pcolor = red or pcolor = yellow]
         [
-          set pcolor green
+          set pcolor black
         ]
       ]
     ]
     [
-      ifelse [pcolor] of patch-here = red or [pcolor] of patch-here = yellow
+      ifelse [pcolor] of patch-ahead 1 = 125
       [
-        die
+        fd 1
       ]
       [
-        ifelse [pcolor] of patch-ahead 1 = green
+        ifelse [pcolor] of patch-left-and-ahead 90 1 = 125
         [
-          fd 1
+          right 90
         ]
         [
-          ifelse [pcolor] of patch-ahead 1 = red or [pcolor] of patch-ahead 1 = yellow
+          ifelse [pcolor] of patch-here = green
           [
-            rt 90
-            ifelse [pcolor] of patch-ahead 1 = red
-            [
-              set energy round(energy * 0.9)
+            set pcolor black
+            set energy energy + Energia
+            if regeneraAlimento? [
+              ask one-of patches with [pcolor = black]
+              [
+                set pcolor green
+              ]
             ]
-            [
-              set energy round(energy * 0.95)
-            ]
-
           ]
           [
-            ifelse random 101 < 90
+            ifelse [pcolor] of patch-here = red or [pcolor] of patch-here = yellow
             [
-              fd 1
+              die
             ]
             [
-              ifelse random 101 < 50
+              ifelse [pcolor] of patch-ahead 1 = green
               [
-                rt 90
+                fd 1
               ]
               [
-                lt 90
+                ifelse [pcolor] of patch-ahead 1 = red or [pcolor] of patch-ahead 1 = yellow
+                [
+                  rt 90
+                  ifelse [pcolor] of patch-ahead 1 = red
+                  [
+                    set energy round(energy * 0.9)
+                  ]
+                  [
+                    set energy round(energy * 0.95)
+                  ]
+
+                ]
+                [
+                  ifelse random 101 < 90
+                  [
+                    fd 1
+                  ]
+                  [
+                    ifelse random 101 < 50
+                    [
+                      rt 90
+                    ]
+                    [
+                      lt 90
+                    ]
+                  ]
+                ]
               ]
             ]
           ]
@@ -1032,6 +1057,14 @@ Polygon -7500403 true true 105 90 120 195 90 285 105 300 135 300 150 225 165 300
 Rectangle -7500403 true true 127 79 172 94
 Polygon -7500403 true true 195 90 240 150 225 180 165 105
 Polygon -7500403 true true 105 90 60 150 75 180 135 105
+
+pila
+true
+0
+Circle -6459832 true false 0 165 120
+Circle -6459832 true false 150 165 120
+Rectangle -6459832 true false 90 15 180 285
+Polygon -6459832 true false 90 30 90 15 135 15 135 0 180 15 90 15 135 0 135 135 135 150 135 180
 
 plant
 false
