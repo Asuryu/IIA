@@ -1,2 +1,2 @@
 # IIA
- Trabalhos práticos de Introdução à Inteligência Artificial
+Primeiro trabalho prático de Introdução à Inteligência Artificial
