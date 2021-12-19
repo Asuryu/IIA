@@ -1,4 +1,4 @@
- globals[contador limite] ; Contador de referência e limite de carga dos limpadores
+globals[contador limite] ; Contador de referência e limite de carga dos limpadores
 
 breed [ninjas ninja] ; Definição do novo tipo de agente: ninjas
 breed[comiloes comilao] ; Definição do novo tipo de agente: comilões
